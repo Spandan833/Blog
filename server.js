@@ -1,21 +1,18 @@
 const express = require('express');
-const mongoose = require('mongoose')
-const articleRouter = require('./routes/article.js')
-const Article = require('./models/article')
-const methodOverride = require('method-override')
+const articleRouter = require('./routes/articles')
+const app = express();
 
-
-const app = express()
-mongoose.connect('mongodb://localhost/blog',{useNewUrlParser: true,useUnifiedTopology: true,useCreateIndex: true})
-app.set('view engine','ejs')
-app.use(express.urlencoded({extended:false}))
-app.use(methodOverride('_method'))
-
-app.use('/articles',articleRouter);
-app.get('/',async (req,res)=>{
-    const articles = await Article.find()
-    res.render('articles/index',{articles: articles});
-})
-app.set('views', __dirname+'/views')
+app.use('/articles',articleRouter)
 
 app.listen(5000);
+
+app.set('view engine','ejs');
+
+app.get('/',(req,res)=>{
+    const articles = [{
+        title: 'Test Article',
+        createdAt: Date.now(),
+        description: 'test description'
+    }]
+    res.render("articles/index",{articles: articles})
+})
