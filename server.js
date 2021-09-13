@@ -4,8 +4,9 @@ const articleRouter = require('./routes/articles')
 const app = express();
 
 mongoose.connect('mongodb://localhost/myBlog',{useNewUrlParser:true, useUnifiedTopology:true});
-
+app.use(express.urlencoded({extended: false}))
 app.use('/articles',articleRouter)
+
 
 app.listen(5000);
 
